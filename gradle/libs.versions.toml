@@ -1,0 +1,14 @@
+[versions]
+kotlin = "2.1.10"
+ktor = "3.0.3"
+
+[libraries]
+kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+jnativehook = { group = "com.github.kwhat", name = "jnativehook", version = "2.2.2" }
+
+ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-websockets = { group = "io.ktor", name = "ktor-client-websockets", version.ref = "ktor" }
+ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty", version.ref = "ktor" }
+ktor-server-websockets = { group = "io.ktor", name = "ktor-server-websockets", version.ref = "ktor" }
+
+slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version = "2.0.16" }
