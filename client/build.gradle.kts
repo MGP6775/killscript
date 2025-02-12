@@ -40,7 +40,8 @@ tasks {
     }
 
     register<Tar>("packageDist") {
-        from(jpackage)
+        dependsOn(jpackage)
+        from(jpackage.get().destination + "/" + jpackage.get().appName)
 
         compression = Compression.GZIP
         archiveExtension = "tar.gz"

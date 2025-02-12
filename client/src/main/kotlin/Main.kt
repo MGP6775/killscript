@@ -24,7 +24,7 @@ private val client = HttpClient {
 
 private fun CoroutineScope.connect() {
     launch {
-        session = client.webSocketSession("ws://haxis.me:5000")
+        session = client.webSocketSession("wss://ks.haxis.me")
 
         println("Connection established")
         for (frame in session.incoming) {
