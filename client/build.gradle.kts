@@ -11,6 +11,7 @@ dependencies {
     implementation(libs.jnativehook)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.websockets)
+    implementation(libs.kotlin.logging)
     implementation(libs.slf4j.simple)
 }
 

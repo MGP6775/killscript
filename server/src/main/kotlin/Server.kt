@@ -1,5 +1,6 @@
 package dev.schlaubi.gtakiller
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -8,6 +9,7 @@ import io.ktor.server.plugins.forwardedheaders.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 
+private val LOG = KotlinLogging.logger { }
 
 fun main() {
     val sessions = mutableListOf<DefaultWebSocketServerSession>()
@@ -20,10 +22,10 @@ fun main() {
             webSocket {
                 sessions += this
 
-                println("Got session from: ${call.request.origin.remoteHost}")
+                LOG.info { "Got session from: ${call.request.origin.remoteHost}" }
 
                 for (frame in incoming) {
-                    println("GOT FRAME: $frame")
+                    LOG.debug { "GOT FRAME: $frame" }
 
                     sessions.forEach {
                         if (it != this) {
@@ -34,7 +36,7 @@ fun main() {
 
                 sessions -= this
 
-                println("Lost session: ${call.request.origin.remoteHost}")
+                LOG.info { "Lost session: ${call.request.origin.remoteHost}" }
             }
         }
     }.start(wait = true)

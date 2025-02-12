@@ -7,6 +7,7 @@ dependencies {
     implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.websockets)
     implementation(libs.ktor.server.forwarded.header)
+    implementation(libs.kotlin.logging)
     implementation(libs.slf4j.simple)
 }
 

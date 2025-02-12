@@ -12,4 +12,5 @@ ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty", version.ref
 ktor-server-websockets = { group = "io.ktor", name = "ktor-server-websockets", version.ref = "ktor" }
 ktor-server-forwarded-header = { group = "io.ktor", name = "ktor-server-forwarded-header", version.ref = "ktor" }
 
+kotlin-logging = { group = "io.github.oshai", name = "kotlin-logging", version = "7.0.4" }
 slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version = "2.0.16" }
