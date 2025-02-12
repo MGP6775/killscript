@@ -8,16 +8,15 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: graalvm/setup-graalvm@v1
+      - uses: actions/setup-java@v4
         with:
-          java-version: '23'
-          distribution: 'graalvm-community'
-          components: 'native-image'
+          distribution: "temurin"
+          java-version: "23"
       - uses: gradle/actions/setup-gradle@v4
-      - run: ./gradlew client:nativeCompile
+      - run: ./gradlew client:packageDist
       - name: Release
         uses: softprops/action-gh-release@v2
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           tag_name: ${{ github.run_number }}
-          files: client/build/native/nativeCompile/client.exe
+          files: client/build/dist/*.tar.gz

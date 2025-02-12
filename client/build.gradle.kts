@@ -1,16 +1,11 @@
+import org.panteleyev.jpackage.ImageType
+
 plugins {
     id("buildsrc.convention.kotlin-jvm")
-    id("org.graalvm.buildtools.native") version "0.10.5"
-    application
+    id("org.panteleyev.jpackageplugin") version "1.6.1"
 }
 
 version = "1.0.0"
-
-configurations {
-    nativeImageCompileOnly {
-        isCanBeResolved = true
-    }
-}
 
 dependencies {
     implementation(libs.jnativehook)
@@ -20,17 +15,37 @@ dependencies {
     implementation(libs.slf4j.simple)
 }
 
-application {
-    mainClass = "dev.schlaubi.mastermind.MainKt"
-    applicationDefaultJvmArgs = listOf("-agentlib:native-image-agent=config-output-dir=C:\\Users\\micha\\IdeaProjects\\gtakiller\\output.json")
-}
+tasks {
+    val copyDependencies by registering(Copy::class) {
+        from(configurations.runtimeClasspath).into(layout.buildDirectory.dir("jars"))
+    }
 
-graalvmNative {
-    toolchainDetection = true
+    val copyJar by registering(Copy::class) {
+        from(jar).into(layout.buildDirectory.dir("jars"))
+    }
 
-    binaries {
-        named("main") {
-            mainClass = "dev.schlaubi.mastermind.MainKt"
-        }
+    jpackage {
+        dependsOn(build, copyDependencies, copyJar)
+        winConsole = true
+
+        input = layout.buildDirectory.dir("jars").get().asFile.absolutePath
+
+        appName = "GTA KILL"
+        vendor = "Schlaubi"
+        type = ImageType.APP_IMAGE
+
+        mainJar = jar.get().archiveFile.get().asFile.absolutePath
+        mainClass = "dev.schlaubi.mastermind.MainKt"
+
+        destination = layout.buildDirectory.dir("dist").get().asFile.absolutePath
+    }
+
+    register<Tar>("packageDist") {
+        dependsOn(jpackage)
+        from(jpackage.get().destination + "/" + jpackage.get().appName)
+
+        compression = Compression.GZIP
+        archiveExtension = "tar.gz"
+        destinationDirectory = layout.buildDirectory.dir("dist")
     }
 }
