@@ -15,11 +15,11 @@ dependencies {
 }
 
 tasks {
-    val copyDependencies = registering(Copy::class) {
+    val copyDependencies by registering(Copy::class) {
         from(configurations.runtimeClasspath).into(layout.buildDirectory.dir("jars"))
     }
 
-    val copyJar = registering(Copy::class) {
+    val copyJar by registering(Copy::class) {
         from(jar).into(layout.buildDirectory.dir("jars"))
     }
 
