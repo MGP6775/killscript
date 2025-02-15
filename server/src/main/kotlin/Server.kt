@@ -29,11 +29,11 @@ fun main() {
                     LOG.debug { "GOT FRAME: $frame" }
 
                     if (frame is Frame.Text) {
-                        LOG.debug { "Got frame text: ${frame.readText()}" }
+                        val text = frame.readText()
+                        LOG.debug { "Got frame text: $text" }
 
-                        val copy = Frame.Text(frame.fin, frame.data)
                         sessions.forEach {
-                            it.send(copy)
+                            it.send(text)
                         }
                     }
                 }
