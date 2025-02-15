@@ -21,7 +21,7 @@ private val LoomDispatcher = Executors
 
 private val client = HttpClient {
     install(WebSockets) {
-        pingInterval = 15.seconds
+        pingInterval = 2.seconds
     }
 }
 
