@@ -8,6 +8,7 @@ import io.ktor.server.plugins.*
 import io.ktor.server.plugins.forwardedheaders.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
+import io.ktor.websocket.*
 
 private val LOG = KotlinLogging.logger { }
 
@@ -27,9 +28,12 @@ fun main() {
                 for (frame in incoming) {
                     LOG.debug { "GOT FRAME: $frame" }
 
-                    sessions.forEach {
-                        if (it != this) {
-                            it.send(frame)
+                    if (frame is Frame.Text) {
+                        LOG.debug { "Got frame text: ${frame.readText()}" }
+
+                        val copy = Frame.Text(frame.fin, frame.data)
+                        sessions.forEach {
+                            it.send(copy)
                         }
                     }
                 }
