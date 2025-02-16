@@ -8,9 +8,13 @@ plugins {
 version = "1.0.0"
 
 dependencies {
+    implementation(projects.common)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.jnativehook)
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.websockets)
+    implementation(libs.ktor.client.resources)
+    implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.kotlin.logging)
     implementation(libs.slf4j.simple)
 }

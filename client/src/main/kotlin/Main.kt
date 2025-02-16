@@ -3,11 +3,17 @@ package dev.schlaubi.mastermind
 import com.github.kwhat.jnativehook.GlobalScreen
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener
+import dev.schlaubi.gtakiller.common.Event
+import dev.schlaubi.gtakiller.common.KillGtaEvent
+import dev.schlaubi.gtakiller.common.Route
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.*
+import io.ktor.client.plugins.resources.*
 import io.ktor.client.plugins.websocket.*
-import io.ktor.websocket.*
+import io.ktor.http.*
+import io.ktor.serialization.kotlinx.*
 import kotlinx.coroutines.*
+import kotlinx.serialization.json.Json
 import java.util.concurrent.Executors
 import kotlin.jvm.optionals.getOrNull
 import kotlin.time.Duration.Companion.seconds
@@ -22,19 +28,27 @@ private val LoomDispatcher = Executors
 private val client = HttpClient {
     install(WebSockets) {
         pingInterval = 2.seconds
+        contentConverter = KotlinxWebsocketSerializationConverter(Json)
     }
+    install(Resources)
 }
 
 private fun CoroutineScope.connect() {
     launch {
-        session = client.webSocketSession("wss://ks.haxis.me")
+        session = client.webSocketSession {
+            url {
+                takeFrom("ws://localhost:8080")
+                client.href(Route.Events(), this)
+            }
+
+            headers.append("X-Username", System.getProperty("user.name"))
+        }
 
         LOG.info { "Connection established" }
-        for (frame in session.incoming) {
+        while (isActive) {
+            val frame = session.receiveDeserialized<Event>()
             LOG.trace { "Got frame: $frame" }
-            val incoming = (frame as? Frame.Text)?.readText() ?: continue
-            LOG.debug { "Got frame text: $incoming" }
-            if (incoming == "KILL_GTA") {
+            if (frame is KillGtaEvent) {
                 kill()
             }
         }
@@ -74,7 +88,7 @@ private fun kill() {
     }
 }
 
-private suspend fun report() = session.outgoing.send(Frame.Text("KILL_GTA"))
+private suspend fun report() = session.sendSerialized<Event>(KillGtaEvent)
 
 private suspend fun reportAndKill() {
     kill()
