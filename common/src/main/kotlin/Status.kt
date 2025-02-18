@@ -14,6 +14,9 @@ data class Status(
             .map { ScoreboardEntry(it.key, it.value.size) }
             .sortedByDescending { it.kills }
 
+
+    fun updateName(id: String, name: String): Status =
+        copy(kills = kills.map { if (it.ipHash == id) it.copy(user = name) else it })
 }
 
 @Serializable
@@ -22,5 +25,6 @@ data class ScoreboardEntry(val user: String, val kills: Int)
 @Serializable
 data class Kill(
     val timestamp: Instant,
-    val user: String
+    val user: String,
+    val ipHash: String
 )

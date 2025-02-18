@@ -2,6 +2,8 @@
 kotlin = "2.1.10"
 ktor = "3.1.0"
 kotlinx-serialization = "1.8.0"
+compose = "1.8.0-alpha03"
+proguard = "7.6.1"
 
 [libraries]
 kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -13,19 +15,25 @@ kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime",
 kotlinx-io-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-io-core", version = "0.6.0" }
 
 ktor-resources = { group = "io.ktor", name = "ktor-resources", version.ref = "ktor" }
-ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
+ktor-http = { group = "io.ktor", name = "ktor-http", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-resources = { group = "io.ktor", name = "ktor-client-resources", version.ref = "ktor" }
 ktor-client-websockets = { group = "io.ktor", name = "ktor-client-websockets", version.ref = "ktor" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty", version.ref = "ktor" }
 ktor-server-websockets = { group = "io.ktor", name = "ktor-server-websockets", version.ref = "ktor" }
 ktor-server-forwarded-header = { group = "io.ktor", name = "ktor-server-forwarded-header", version.ref = "ktor" }
 ktor-server-resources = { group = "io.ktor", name = "ktor-server-resources", version.ref = "ktor" }
 ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-content-negotiation", version.ref = "ktor" }
 
-ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+androidx-lifecycle-viewmodel-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version = "2.9.0-alpha03" }
+compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version = "2.8.0-alpha13" }
 
 kotlin-logging = { group = "io.github.oshai", name = "kotlin-logging", version = "7.0.4" }
-slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version = "2.0.16" }
+logback-classic = { group = "ch.qos.logback", name = "logback-classic", version = "1.5.16" }
 
 [plugins]
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }

@@ -7,4 +7,5 @@ dependencies {
     api(libs.kotlinx.serialization.json)
     api(libs.kotlinx.datetime)
     api(libs.ktor.resources)
+    api(libs.ktor.http)
 }

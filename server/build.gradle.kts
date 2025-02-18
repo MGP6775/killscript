@@ -1,6 +1,5 @@
 plugins {
     id("buildsrc.convention.kotlin-jvm")
-    application
 }
 
 dependencies {
@@ -14,9 +13,6 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.kotlin.logging)
-    implementation(libs.slf4j.simple)
-}
+    implementation(libs.logback.classic)
 
-application {
-    mainClass = "dev.schlaubi.gtakiller.ServerKt"
 }

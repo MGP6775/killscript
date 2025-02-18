@@ -13,10 +13,12 @@ jobs:
           distribution: "temurin"
           java-version: "23"
       - uses: gradle/actions/setup-gradle@v4
-      - run: ./gradlew client:packageDist
+      - run: ./gradlew client:packageReleaseDistributionForCurrentOS
+      - run: mv client-*.msi client.msi
+        working-directory: client/build/compose/binaries/main-release/msi/
       - name: Release
         uses: softprops/action-gh-release@v2
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           tag_name: ${{ github.run_number }}
-          files: client/build/dist/*.tar.gz
+          files: client/build/compose/binaries/main-release/msi/*.msi
