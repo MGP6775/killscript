@@ -14,7 +14,7 @@ jobs:
           java-version: "23"
       - uses: gradle/actions/setup-gradle@v4
       - run: ./gradlew client:packageReleaseDistributionForCurrentOS
-      - run: mv GTA.Killer-*.msi client.msi
+      - run: mv GTA\ Killer-*.msi client.msi
         working-directory: client/build/compose/binaries/main-release/msi/
       - name: Release
         uses: softprops/action-gh-release@v2
