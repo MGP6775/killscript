@@ -1,6 +1,7 @@
 package dev.schlaubi.gtakiller
 
 import dev.schlaubi.gtakiller.common.*
+import dev.schlaubi.gtakiller.common.Route
 import dev.schlaubi.gtakiller.util.hashIpAddress
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.*
@@ -8,7 +9,6 @@ import io.ktor.serialization.kotlinx.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
-import io.ktor.server.routing.Route as KtorRoute
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -24,6 +24,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.json.Json
 import kotlin.time.Duration.Companion.seconds
+import io.ktor.server.routing.Route as KtorRoute
 
 private val LOG = KotlinLogging.logger { }
 
@@ -79,7 +80,9 @@ private fun KtorRoute.websocketHandler() {
                 }
 
                 sessions.forEach {
-                    it.send(event)
+                    if (it != this@websocketHandler) {
+                        it.send(event)
+                    }
                 }
 
                 if (event is KillGtaEvent) {
@@ -92,6 +95,8 @@ private fun KtorRoute.websocketHandler() {
                                 count = stats.count + 1
                             )
                         )
+                    } else {
+                        LOG.debug { "Ignoring kill, last kill was $timeSinceLastKill ago" }
                     }
                     sessions.forEach {
                         it.send(UpdateKillCounterEvent(stats.count, kill))
