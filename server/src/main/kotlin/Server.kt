@@ -89,17 +89,19 @@ private fun KtorRoute.websocketHandler() {
                     val kill = Kill(Clock.System.now(), name, ipHash)
                     val timeSinceLastKill = Clock.System.now() - (lastKill ?: Instant.DISTANT_PAST)
                     if (timeSinceLastKill >= 10.seconds) {
+                        lastKill = Clock.System.now()
                         writeStats(
                             stats.copy(
                                 stats.kills + kill,
                                 count = stats.count + 1
                             )
                         )
+
+                        sessions.forEach {
+                            it.send(UpdateKillCounterEvent(stats.count, kill))
+                        }
                     } else {
                         LOG.debug { "Ignoring kill, last kill was $timeSinceLastKill ago" }
-                    }
-                    sessions.forEach {
-                        it.send(UpdateKillCounterEvent(stats.count, kill))
                     }
                 }
             }
