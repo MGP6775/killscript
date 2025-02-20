@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.compose)
 }
 
-version = "1.1.0"
+version = "1.2.0"
 
 repositories {
     mavenCentral()
@@ -20,7 +20,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.jnativehook)
     implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.websockets)
     implementation(libs.ktor.client.resources)
     implementation(libs.ktor.client.content.negotiation)

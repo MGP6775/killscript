@@ -9,7 +9,8 @@ data class Settings(
     val currentUrl: Url?,
     val pastUrls: Set<Url>,
     val userName: String,
-    val hotkey: Int = NativeKeyEvent.VC_F3
+    val hotkey: Int = NativeKeyEvent.VC_F3,
+    val tokens: Map<String, String> = emptyMap()
 )
 
 fun Settings.addServerOrMoveToTop(serverUrl: Url): Settings {

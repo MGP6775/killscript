@@ -6,15 +6,8 @@ import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import dev.schlaubi.gtakiller.common.UpdateNameCommand
 import dev.schlaubi.gtakiller.common.UpdateNameEvent
 import dev.schlaubi.mastermind.core.safeApi
 import dev.schlaubi.mastermind.core.settings.settings
@@ -41,9 +34,8 @@ fun UsernameInput() {
     }, "Username", initialValue = settings.userName, enabled = !loading, onSubmit = { newValue ->
         loading = true
         scope.launch(Dispatchers.IO) {
-            safeApi.sendEvent(UpdateNameCommand(newValue))
+            safeApi.updateName(newValue)
             writeSettings(settings.copy(userName = newValue))
-            loading = false
         }
     })
 }

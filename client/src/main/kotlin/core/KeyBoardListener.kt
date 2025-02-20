@@ -19,6 +19,6 @@ fun registerKeyBoardListener() = GlobalScreen.addNativeKeyListener(object : Nati
 })
 
 suspend fun reportAndKill() {
-    reportKillCommand()
+    safeApi.killGta()
     killGta()
 }

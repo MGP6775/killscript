@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import dev.kord.gateway.retry.LinearRetry
 import dev.schlaubi.gtakiller.common.*
 import dev.schlaubi.mastermind.core.settings.settings
+import dev.schlaubi.mastermind.core.settings.writeSettings
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -13,6 +14,7 @@ import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.resources.*
 import io.ktor.client.plugins.websocket.*
+import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.*
 import io.ktor.serialization.kotlinx.*
@@ -46,6 +48,8 @@ class APIClient(val url: Url) : CoroutineScope {
 
         defaultRequest {
             url.takeFrom(this@APIClient.url)
+            val token = settings.tokens[url.build().hostWithPort]
+            token?.let { bearerAuth(it) }
         }
     }
 
@@ -56,6 +60,9 @@ class APIClient(val url: Url) : CoroutineScope {
 
     suspend fun connectToWebSocket(isRetry: Boolean = false) {
         webSocketSession?.close()
+        if (url.hostWithPort !in settings.tokens) {
+            writeSettings(settings.copy(tokens = settings.tokens + (url.hostWithPort to register().token)))
+        }
         val session = try {
             client.webSocketSession {
                 url {
@@ -69,6 +76,7 @@ class APIClient(val url: Url) : CoroutineScope {
                     client.href(Route.Events(), this)
                 }
 
+                bearerAuth(settings.tokens[this@APIClient.url.hostWithPort]!!)
                 headers.append(HttpHeaders.Username, settings.userName)
             }
         } catch (e: Exception) {
@@ -99,22 +107,29 @@ class APIClient(val url: Url) : CoroutineScope {
 
     suspend fun getCurrentStatus() = client.get(Route.Status()).body<Status>()
 
-    suspend fun sendEvent(event: Event) {
-        LOG.debug { "Sending event: $event" }
-        webSocketSession?.sendSerialized(event) ?: error("Not connected")
+    suspend fun register() = client.post(Route.SignUp()) {
+        contentType(ContentType.Application.Json)
+        setBody(UserCreateRequest(settings.userName))
+    }.body<JWTUser>()
+
+    suspend fun updateName(name: String) = client.patch(Route.Me()) {
+        contentType(ContentType.Application.Json)
+        setBody(UserUpdateRequest(name))
+    }.body<JWTUser>().also {
+        writeSettings(settings.copy(tokens = settings.tokens + (url.hostWithPort to it.token)))
     }
+
+    private suspend fun handleEvent(event: Event) {
+        when (event) {
+            is KillGtaEvent -> dev.schlaubi.mastermind.core.killGta()
+            else -> {}
+        }
+    }
+
+    suspend fun killGta() = client.post(Route.Kill()).body<Unit>()
 
     fun disconnect() {
         client.close()
         webSocketSession?.cancel()
-    }
-}
-
-suspend fun reportKillCommand() = safeApi.sendEvent(KillGtaEvent)
-
-private suspend fun handleEvent(event: Event) {
-    when (event) {
-        is KillGtaEvent -> killGta()
-        else -> {}
     }
 }

@@ -1,6 +1,6 @@
 # Ktor
 -keepclassmembers class io.ktor.** { volatile <fields>; }
--keep class io.ktor.client.engine.cio.CIOEngineContainer
+-keep class io.ktor.client.engine.okhttp.OkHttpEngineContainer
 -keep class io.ktor.serialization.kotlinx.json.KotlinxSerializationJsonExtensionProvider
 
 # SLF4j
