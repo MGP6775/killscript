@@ -16,8 +16,7 @@ fun Route.userRoute() {
         val (newName) = call.receive<UserUpdateRequest>()
         writeStats(stats.updateName(userId, newName))
 
-        broadcastEvent(UpdateNameEvent(userId, newName))
-
         call.respond(HttpStatusCode.Accepted, createToken(newName, userId))
+        broadcastEvent(UpdateNameEvent(userId, newName))
     }
 }
