@@ -36,6 +36,7 @@ dependencies {
     implementation(compose.ui)
     implementation(compose.material3)
     implementation(compose.materialIconsExtended)
+    implementation(compose.components.resources)
     implementation(libs.compose.navigation)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 }
@@ -55,36 +56,43 @@ tasks {
     }
 }
 
-compose.desktop {
-    application {
-        mainClass = "dev.schlaubi.mastermind.LauncherKt"
-        jvmArgs("--enable-native-access=ALL-UNNAMED")
+compose {
+    resources {
+        packageOfResClass = "dev.schlaubi.mastermind.resources"
+        customDirectory("main", provider { layout.projectDirectory.dir("src/main/composeResources") })
+    }
+    desktop {
+        application {
+            mainClass = "dev.schlaubi.mastermind.LauncherKt"
+            jvmArgs("--enable-native-access=ALL-UNNAMED")
 
-        nativeDistributions {
-            modules(
-                "java.naming" // required by logback
-            )
-            targetFormats(TargetFormat.Msi)
+            nativeDistributions {
+                modules(
+                    "java.naming" // required by logback
+                )
+                targetFormats(TargetFormat.Msi)
 
-            appResourcesRootDir.set(layout.buildDirectory.dir("dll"))
+                appResourcesRootDir.set(layout.buildDirectory.dir("dll"))
 
-            licenseFile = rootProject.file("LICENSE")
-            vendor = "Schlaubi"
-            description = "GTA kill script"
-            copyright = "(c) 2025 Michael Rittmeister"
-            packageName = "GTA Killer"
+                licenseFile = rootProject.file("LICENSE")
+                vendor = "Schlaubi"
+                description = "GTA kill script"
+                copyright = "(c) 2025 Michael Rittmeister"
+                packageName = "GTA Killer"
 
-            windows {
-                menuGroup = "GTA Killer"
-                upgradeUuid = "8193b8f9-1355-4d0f-9c6f-6619d0f18604"
+                windows {
+                    iconFile = layout.projectDirectory.file("icons/icon.ico")
+                    menuGroup = "GTA Killer"
+                    upgradeUuid = "8193b8f9-1355-4d0f-9c6f-6619d0f18604"
+                }
             }
-        }
 
-        buildTypes {
-            release {
-                proguard {
-                    version = libs.versions.proguard
-                    configurationFiles.from(project.file("rules.pro"))
+            buildTypes {
+                release {
+                    proguard {
+                        version = libs.versions.proguard
+                        configurationFiles.from(project.file("rules.pro"))
+                    }
                 }
             }
         }
