@@ -75,7 +75,6 @@ compose.desktop {
             packageName = "GTA Killer"
 
             windows {
-                console = true
                 menuGroup = "GTA Killer"
                 upgradeUuid = "8193b8f9-1355-4d0f-9c6f-6619d0f18604"
             }
