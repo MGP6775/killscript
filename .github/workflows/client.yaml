@@ -12,6 +12,11 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "23"
+      - name: 'Set up latest JDK code tool jextract'
+        uses: oracle-actions/setup-java@v1
+        with:
+          website: jdk.java.net
+          release: jextract
       - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           cache-workspaces: windows_helper
