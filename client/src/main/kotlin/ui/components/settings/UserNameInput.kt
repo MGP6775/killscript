@@ -27,7 +27,7 @@ fun UsernameInput() {
             .collect { loading = false }
     }
 
-    InputWithHeading({
+    TextInputWithHeading({
         if (loading) CircularProgressIndicator(Modifier.size(ButtonDefaults.IconSize)) else Icon(
             Icons.Default.AccountBox, "Username"
         )

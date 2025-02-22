@@ -2,11 +2,9 @@ package dev.schlaubi.mastermind.ui.components.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,12 +25,31 @@ fun Settings(modifier: Modifier = Modifier) {
         ) {
             UsernameInput()
             KeyboardInput()
+            AutoLaunchGtaSetting()
         }
     }
 }
 
 @Composable
 fun InputWithHeading(
+    heading: String,
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit
+) {
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+        modifier = modifier
+    ) {
+        Text(heading, style = MaterialTheme.typography.headlineSmall)
+
+        content()
+    }
+}
+
+@Composable
+fun TextInputWithHeading(
     leadingIcon: @Composable () -> Unit,
     heading: String,
     initialValue: String,
@@ -42,41 +59,40 @@ fun InputWithHeading(
     onValueChange: (String) -> Unit = {},
     onSubmit: (String) -> Unit = {},
     modifier: Modifier = Modifier
-) {
-    var value by remember { mutableStateOf(initialValue) }
+) = InputWithHeading(heading, modifier) {
     val focusRequester = LocalFocusManager.current
+    var value by remember { mutableStateOf(initialValue) }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(5.dp),
-        modifier = modifier
-    ) {
-        Text(heading, style = MaterialTheme.typography.headlineSmall)
+    OutlinedTextField(
+        value = value,
+        { value = it; onValueChange(it) },
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        colors = TextFieldDefaults.colors(),
+        enabled = enabled,
+        isError = isError,
+        maxLines = 1,
+        modifier = Modifier.onKeyEvent {
+            if (it.type != KeyEventType.KeyDown) return@onKeyEvent true
 
-        OutlinedTextField(
-            value = value,
-            { value = it; onValueChange(it) },
-            leadingIcon = leadingIcon,
-            trailingIcon = trailingIcon,
-            colors = TextFieldDefaults.colors(),
-            enabled = enabled,
-            isError = isError,
-            maxLines = 1,
-            modifier = Modifier.onKeyEvent {
-                if (it.type != KeyEventType.KeyDown) return@onKeyEvent true
-
-                when (it.key) {
-                    Key.Escape -> {
-                        value = initialValue
-                        focusRequester.clearFocus()
-                    }
+            when (it.key) {
+                Key.Escape -> {
+                    value = initialValue
+                    focusRequester.clearFocus()
                 }
+            }
 
-                false
-            }.onFocusChanged {
-                if (!it.isFocused && value != initialValue) {
-                    onSubmit(value)
-                }
-            })
-    }
+            false
+        }.onFocusChanged {
+            if (!it.isFocused && value != initialValue) {
+                onSubmit(value)
+            }
+        })
 }
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun CheckboxWithHeading(heading: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) =
+    InputWithHeading(heading) {
+        Checkbox(checked, onCheckedChange)
+    }

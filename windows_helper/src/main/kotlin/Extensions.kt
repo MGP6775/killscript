@@ -3,6 +3,7 @@ package dev.schlaubi.mastermind.windows_helper
 import java.lang.foreign.Arena
 import java.lang.foreign.MemorySegment
 import java.lang.foreign.SegmentAllocator
+import kotlin.io.path.Path
 
 private fun readString(producer: (SegmentAllocator) -> MemorySegment): String = Arena.ofConfined().use { arena ->
     val vec = producer(arena)
@@ -21,7 +22,7 @@ private fun readString(producer: (SegmentAllocator) -> MemorySegment): String = 
 
 
 object WindowsAPI : Arena by Arena.ofConfined() {
-    fun readGtaLocation() = readString(WindowsHelper::read_gta_location)
+    fun readGtaLocation() = Path(readString(WindowsHelper::read_gta_location))
 
     fun registerKeyboardHook() = WindowsHelper.register_keyboard_hook()
 

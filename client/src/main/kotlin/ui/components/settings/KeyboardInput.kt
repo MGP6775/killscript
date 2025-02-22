@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.*
+import androidx.compose.ui.input.key.nativeKeyCode
 import dev.schlaubi.mastermind.core.settings.settings
 import dev.schlaubi.mastermind.core.settings.writeSettings
 import dev.schlaubi.mastermind.util.keys
@@ -16,14 +17,14 @@ fun KeyboardInput() {
     val scope = rememberCoroutineScope()
 
     Box {
-        InputWithHeading(
+        TextInputWithHeading(
             { Icon(Icons.Default.Keyboard, null) }, "HotKey", initialValue = "F3",
             isError = isError,
             onValueChange = { isError = it !in keys },
             onSubmit = {
                 if (!isError) {
                     scope.launch {
-                        writeSettings(settings.copy(hotkey = keys[it]!!))
+                        writeSettings(settings.copy(hotkey = keys[it]!!.nativeKeyCode))
                     }
                 }
             }

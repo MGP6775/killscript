@@ -1,9 +1,11 @@
 package dev.schlaubi.mastermind.core.settings
 
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.nativeKeyCode
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
-const val F3_KEY = 113
+val F3_KEY = Key.F3.nativeKeyCode
 
 @Serializable
 data class Settings(
@@ -11,6 +13,7 @@ data class Settings(
     val pastUrls: Set<Url>,
     val userName: String,
     val hotkey: Int = F3_KEY,
+    val autostartGta: Boolean = true,
     val tokens: Map<String, String> = emptyMap()
 )
 
