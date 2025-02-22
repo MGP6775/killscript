@@ -14,7 +14,8 @@ plugins {
 include(
     ":common",
     ":server",
-    ":client"
+    ":client",
+    ":windows_helper"
 )
 
 rootProject.name = "gtakiller"

@@ -5,7 +5,6 @@ package dev.schlaubi.mastermind.core.settings
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.io.buffered
@@ -30,7 +29,7 @@ private fun readSettings(): Settings {
     if (!fs.exists(file)) {
         return Settings(
             null, emptySet(), System.getProperty("user.name"),
-            NativeKeyEvent.VC_F3
+            F3_KEY
         )
     }
 

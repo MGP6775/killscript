@@ -1,12 +1,12 @@
 package dev.schlaubi.mastermind
 
 import androidx.compose.ui.window.singleWindowApplication
-import com.github.kwhat.jnativehook.GlobalScreen
 import dev.schlaubi.mastermind.core.registerKeyBoardListener
 import dev.schlaubi.mastermind.ui.GTAKiller
+import dev.schlaubi.mastermind.windows_helper.WindowsAPI
 
 fun main() {
-    GlobalScreen.registerNativeHook()
+    WindowsAPI.registerKeyboardHook()
     registerKeyBoardListener()
 
     singleWindowApplication(title = "GTA Killer") {

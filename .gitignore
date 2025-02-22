@@ -119,3 +119,8 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,gradle
 
 store/
+
+# Added by cargo
+
+/target
+windows_helper/target

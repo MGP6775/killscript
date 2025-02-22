@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.compose)
 }
 
-version = "1.2.0"
+version = "1.3.0"
 
 repositories {
     mavenCentral()
@@ -17,8 +17,8 @@ repositories {
 
 dependencies {
     implementation(projects.common)
+    implementation(projects.windowsHelper)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.jnativehook)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.websockets)
@@ -40,14 +40,33 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 }
 
+tasks {
+    val copyDll by registering(Copy::class) {
+        dependsOn(":windows_helper:compileRust",":windows_helper:generateHeaders")
+        from(project(":windows_helper").layout.projectDirectory.dir("target/release/windows_helper.dll"))
+        include("*.dll")
+        into(layout.buildDirectory.dir("dll/common"))
+    }
+
+    afterEvaluate {
+        named("prepareAppResources") {
+            dependsOn(copyDll)
+        }
+    }
+}
+
 compose.desktop {
     application {
         mainClass = "dev.schlaubi.mastermind.LauncherKt"
+        jvmArgs("--enable-native-access=ALL-UNNAMED")
+
         nativeDistributions {
             modules(
                 "java.naming" // required by logback
             )
             targetFormats(TargetFormat.Msi)
+
+            appResourcesRootDir.set(layout.buildDirectory.dir("dll"))
 
             licenseFile = rootProject.file("LICENSE")
             vendor = "Schlaubi"

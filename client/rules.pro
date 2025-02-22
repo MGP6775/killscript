@@ -36,7 +36,8 @@
 -dontwarn io.ktor.**
 
 # hotkeys
--keep class com.github.kwhat.jnativehook.** { *; } # Preserve all native hook classes and their methods
+-dontwarn dev.schlaubi.mastermind.windows_helper.**
+-keep class dev.schlaubi.mastermind.windows_helper.** { *; }
 
 # compose
 -dontoptimize

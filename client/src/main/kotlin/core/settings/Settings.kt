@@ -1,15 +1,16 @@
 package dev.schlaubi.mastermind.core.settings
 
-import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent
-import io.ktor.http.Url
+import io.ktor.http.*
 import kotlinx.serialization.Serializable
+
+const val F3_KEY = 113
 
 @Serializable
 data class Settings(
     val currentUrl: Url?,
     val pastUrls: Set<Url>,
     val userName: String,
-    val hotkey: Int = NativeKeyEvent.VC_F3,
+    val hotkey: Int = F3_KEY,
     val tokens: Map<String, String> = emptyMap()
 )
 
