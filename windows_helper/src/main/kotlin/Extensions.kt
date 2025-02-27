@@ -45,11 +45,7 @@ private fun SegmentAllocator.allocateCStrings(vararg values: String) = slice_ref
     }
 
     slice_ref_Vec_uint8.len(it, values.size.toLong())
-    it.set(
-        slice_ref_Vec_uint8.`ptr$layout`(),
-        slice_ref_Vec_uint8.`ptr$offset`(),
-        array.elements(Vec_uint8.`ptr$layout`()).findFirst().get()
-    )
+    slice_ref_Vec_uint8.ptr(it, array)
 }
 
 object WindowsAPI : Arena by Arena.ofConfined() {
