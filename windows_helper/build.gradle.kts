@@ -59,10 +59,14 @@ tasks {
             "--include-function", "read_gta_location",
             "--include-function", "register_keyboard_handler",
             "--include-function", "register_keyboard_hook",
+            "--include-function", "spawn_detached_process",
+            "--include-function", "spawn_elevated_process",
             "--include-function", "free_c_string",
             "--include-typedef", "uint8_t",
             "--include-typedef", "size_t",
             "--include-struct", "Vec_uint8",
+            "--include-struct", "Vec_uint8_t",
+            "--include-struct", "slice_ref_Vec_uint8",
             header,
         )
     }

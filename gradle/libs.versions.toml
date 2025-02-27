@@ -42,3 +42,4 @@ jwt = { group = "com.auth0", name = "java-jwt", version = "4.5.0" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+buildconfig = { id = "com.github.gmazzo.buildconfig", version = "5.5.1" }

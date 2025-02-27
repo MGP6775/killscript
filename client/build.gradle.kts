@@ -5,9 +5,10 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose)
+    alias(libs.plugins.buildconfig)
 }
 
-version = "1.3.0"
+version = "1.4.0"
 
 repositories {
     mavenCentral()
@@ -61,6 +62,7 @@ compose {
         packageOfResClass = "dev.schlaubi.mastermind.resources"
         customDirectory("main", provider { layout.projectDirectory.dir("src/main/composeResources") })
     }
+
     desktop {
         application {
             mainClass = "dev.schlaubi.mastermind.LauncherKt"
@@ -97,4 +99,10 @@ compose {
             }
         }
     }
+}
+
+buildConfig {
+    packageName("dev.schlaubi.mastermind")
+
+    buildConfigField("APP_VERSION", provider { "${project.version}" })
 }

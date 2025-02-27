@@ -10,6 +10,7 @@ private fun readString(producer: (SegmentAllocator) -> MemorySegment): String = 
     val ptr = Vec_uint8.ptr(vec)
     try {
         val vectorLength = Vec_uint8.len(vec)
+        println(Vec_uint8.cap(vec))
         val bytes = ptr
             .reinterpret(vectorLength)
             .asByteBuffer()
@@ -20,6 +21,36 @@ private fun readString(producer: (SegmentAllocator) -> MemorySegment): String = 
     }
 }
 
+private fun SegmentAllocator.allocateCString(value: String) = Vec_uint8.allocate(this).also {
+    allocateStringSegment(value, it)
+}
+
+private fun SegmentAllocator.allocateStringSegment(
+    value: String,
+    segment: MemorySegment
+) {
+    val ptr = allocateFrom(value)
+    val len = value.length.toLong()
+
+    Vec_uint8.len(segment, len)
+    Vec_uint8.ptr(segment, ptr)
+}
+
+private fun SegmentAllocator.allocateCStrings(vararg values: String) = slice_ref_Vec_uint8.allocate(this).also {
+    val array = Vec_uint8.allocateArray(values.size.toLong(), this)
+    values.forEachIndexed { index, value ->
+        val entry = array.asSlice(index.toLong() * Vec_uint8.sizeof(), Vec_uint8.sizeof())
+
+        allocateStringSegment(value, entry)
+    }
+
+    slice_ref_Vec_uint8.len(it, values.size.toLong())
+    it.set(
+        slice_ref_Vec_uint8.`ptr$layout`(),
+        slice_ref_Vec_uint8.`ptr$offset`(),
+        array.elements(Vec_uint8.`ptr$layout`()).findFirst().get()
+    )
+}
 
 object WindowsAPI : Arena by Arena.ofConfined() {
     fun readGtaLocation() = Path(readString(WindowsHelper::read_gta_location))
@@ -30,4 +61,15 @@ object WindowsAPI : Arena by Arena.ofConfined() {
         val lambda = `register_keyboard_handler$cb`.allocate({ callback(it) }, this)
         WindowsHelper.register_keyboard_handler(lambda)
     }
+
+    fun spawnDetachedProcess(command: String) =
+        Arena.ofConfined().use { WindowsHelper.spawn_detached_process(it.allocateCString(command)) }
+
+    fun spawnElevatedProcess(command: String, vararg args: String) =
+        Arena.ofConfined().use {
+            val binary = it.allocateCString(command)
+            val args = it.allocateCStrings(*args)
+
+            WindowsHelper.spawn_elevated_process(binary, args)
+        }
 }

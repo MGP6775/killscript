@@ -5,6 +5,7 @@ use std::ffi::c_char;
 
 mod install_location;
 mod keyboard_handler;
+mod process_handler;
 
 #[ffi_export]
 fn free_c_string(ptr: *mut c_char) {
