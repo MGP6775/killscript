@@ -21,7 +21,7 @@ dependencies {
     implementation(projects.windowsHelper)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.java)
     implementation(libs.ktor.client.websockets)
     implementation(libs.ktor.client.resources)
     implementation(libs.ktor.client.content.negotiation)
@@ -42,6 +42,21 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 }
 
+val collectProguardConfigs by tasks.registering(Copy::class) {
+    dependsOn(":windows_helper:jar", ":common:jar")
+    into(layout.buildDirectory.dir("proguard-files"))
+    include("META-INF/proguard/*.pro")
+    eachFile { path = name }
+
+    from({
+        configurations.runtimeClasspath.get().map {
+            zipTree(it).matching {
+                include("META-INF/proguard/*.pro")
+            }
+        }
+    })
+}
+
 tasks {
     val copyDll by registering(Copy::class) {
         dependsOn(":windows_helper:compileRust",":windows_helper:generateHeaders")
@@ -54,8 +69,12 @@ tasks {
         named("prepareAppResources") {
             dependsOn(copyDll)
         }
+        named("proguardReleaseJars") {
+            dependsOn(collectProguardConfigs)
+        }
     }
 }
+
 
 compose {
     resources {
@@ -67,10 +86,13 @@ compose {
         application {
             mainClass = "dev.schlaubi.mastermind.LauncherKt"
             jvmArgs("--enable-native-access=ALL-UNNAMED")
+//            jvmArgs("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005")
 
             nativeDistributions {
                 modules(
-                    "java.naming" // required by logback
+                    "java.naming", // required by logback
+                    "java.net.http", // HTTP Client
+                    "jdk.jdi"
                 )
                 targetFormats(TargetFormat.Msi)
 
@@ -93,7 +115,13 @@ compose {
                 release {
                     proguard {
                         version = libs.versions.proguard
-                        configurationFiles.from(project.file("rules.pro"))
+                        obfuscate = false
+                        configurationFiles.from(
+                            fileTree(collectProguardConfigs.map { it.destinationDir }) {
+                                include("*.pro")
+                            },
+                            project.file("rules.pro")
+                        )
                     }
                 }
             }

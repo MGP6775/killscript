@@ -48,13 +48,13 @@ private fun SegmentAllocator.allocateCStrings(vararg values: String) = slice_ref
     slice_ref_Vec_uint8.ptr(it, array)
 }
 
-object WindowsAPI : Arena by Arena.ofConfined() {
+object WindowsAPI {
     fun readGtaLocation() = Path(readString(WindowsHelper::read_gta_location))
 
     fun registerKeyboardHook() = WindowsHelper.register_keyboard_hook()
 
-    fun registerKeyboardListener(callback: (Int) -> Unit) {
-        val lambda = `register_keyboard_handler$cb`.allocate({ callback(it) }, this)
+    fun registerKeyboardListener(arena: Arena, callback: (Int) -> Unit) {
+        val lambda = `register_keyboard_handler$cb`.allocate({ callback(it) }, arena)
         WindowsHelper.register_keyboard_handler(lambda)
     }
 
