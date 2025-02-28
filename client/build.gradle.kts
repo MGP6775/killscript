@@ -86,13 +86,11 @@ compose {
         application {
             mainClass = "dev.schlaubi.mastermind.LauncherKt"
             jvmArgs("--enable-native-access=ALL-UNNAMED")
-//            jvmArgs("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005")
 
             nativeDistributions {
                 modules(
                     "java.naming", // required by logback
                     "java.net.http", // HTTP Client
-                    "jdk.jdi"
                 )
                 targetFormats(TargetFormat.Msi)
 
