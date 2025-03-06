@@ -4,11 +4,13 @@ import dev.schlaubi.mastermind.core.settings.settings
 import dev.schlaubi.mastermind.windows_helper.WindowsAPI
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.div
 import kotlin.jvm.optionals.getOrNull
+import kotlin.time.Duration.Companion.seconds
 
 private val LOG = KotlinLogging.logger { }
 
@@ -24,6 +26,8 @@ suspend fun killGta() {
         .findFirst()
     if (gtaProcess.isPresent) {
         gtaProcess.get().destroyForcibly()
+
+        delay(2.seconds)
 
         if (settings.autostartGta) {
             LOG.info { "Restarting GTA5.exe" }
