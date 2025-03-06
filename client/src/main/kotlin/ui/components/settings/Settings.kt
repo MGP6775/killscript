@@ -26,6 +26,7 @@ fun Settings(modifier: Modifier = Modifier) {
             UsernameInput()
             KeyboardInput()
             AutoLaunchGtaSetting()
+            VersionSwitcher()
         }
     }
 }

@@ -49,7 +49,9 @@ private fun SegmentAllocator.allocateCStrings(vararg values: String) = slice_ref
 }
 
 object WindowsAPI {
-    fun readGtaLocation() = Path(readString(WindowsHelper::read_gta_location))
+    fun readGtaLocation(version: GTAVersion) = Arena.ofConfined().use {
+        Path(readString { WindowsHelper.read_gta_location(it, version.ordinal.toByte())})
+    }
 
     fun registerKeyboardHook() = WindowsHelper.register_keyboard_hook()
 

@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.konan.target.HostManager
 plugins {
     java
     kotlin("jvm")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 val jextractOutput: Provider<Directory> = layout.buildDirectory.dir("generated/jextract/main/java")
@@ -14,6 +15,10 @@ sourceSets {
         java.srcDir(jextractOutput)
         resources.srcDir(layout.buildDirectory.dir("generated/resources/main"))
     }
+}
+
+dependencies {
+    implementation(libs.kotlinx.serialization.json)
 }
 
 tasks {
@@ -57,6 +62,7 @@ tasks {
             "--library", libraryPath,
             "--output", jextractOutput.get().asFile.absolutePath,
             "--include-function", "read_gta_location",
+            "--include-function", "detect_version",
             "--include-function", "register_keyboard_handler",
             "--include-function", "register_keyboard_hook",
             "--include-function", "spawn_detached_process",

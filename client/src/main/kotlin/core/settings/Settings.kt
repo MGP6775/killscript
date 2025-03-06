@@ -2,6 +2,7 @@ package dev.schlaubi.mastermind.core.settings
 
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.nativeKeyCode
+import dev.schlaubi.mastermind.windows_helper.GTAVersion
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
@@ -13,6 +14,7 @@ data class Settings(
     val pastUrls: Set<Url>,
     val userName: String,
     val hotkey: Int = F3_KEY,
+    val gtaVersion: GTAVersion = GTAVersion.LEGACY,
     val autostartGta: Boolean = true,
     val tokens: Map<String, String> = emptyMap()
 )

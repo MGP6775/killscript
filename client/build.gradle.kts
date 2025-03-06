@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.buildconfig)
 }
 
-version = "1.4.1"
+version = "1.5.0"
 
 repositories {
     mavenCentral()

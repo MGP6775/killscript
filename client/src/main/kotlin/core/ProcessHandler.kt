@@ -16,17 +16,18 @@ private val _events = MutableSharedFlow<Unit>(extraBufferCapacity = Channel.UNLI
 val gtaKillErrors = _events.asSharedFlow()
 
 suspend fun killGta() {
-    LOG.info { "Trying to kill GTA5.exe" }
+    val version = settings.gtaVersion
+    LOG.info { "Trying to kill ${version.process}" }
 
     val gtaProcess = ProcessHandle.allProcesses()
-        .filter { it.info().command().getOrNull()?.contains("GTA5.exe") == true }
+        .filter { it.info().command().getOrNull()?.contains(version.process) == true }
         .findFirst()
     if (gtaProcess.isPresent) {
         gtaProcess.get().destroyForcibly()
 
         if (settings.autostartGta) {
             LOG.info { "Restarting GTA5.exe" }
-            val gtaPath = WindowsAPI.readGtaLocation() / "PlayGTAV.exe"
+            val gtaPath = WindowsAPI.readGtaLocation(version) / version.startBinary
             Runtime.getRuntime().exec(arrayOf(gtaPath.absolutePathString()))
         }
     } else {
