@@ -166,7 +166,8 @@ fun ApplicationScope.Updater() {
                                                 "/i",
                                                 file.absolutePathString(),
                                                 "/passive",
-                                                "/quiet"
+                                                "/quiet",
+                                                "/norestart"
                                             )
                                         if (exitCode != 0) {
                                             error("msiexec returned with exit code $exitCode")
