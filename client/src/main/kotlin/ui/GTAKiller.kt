@@ -21,6 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.schlaubi.gtakiller.common.KillGtaEvent
+import dev.schlaubi.mastermind.core.Event
 import dev.schlaubi.mastermind.core.currentApi
 import dev.schlaubi.mastermind.core.gtaKillErrors
 import dev.schlaubi.mastermind.core.settings.settings
@@ -51,7 +52,11 @@ fun GTAKiller() {
     LaunchedEffect(Unit) {
         gtaKillErrors
             .collect {
-                snackbarHostState.showSnackbar("GTA5.exe is not running", withDismissAction = true)
+                val message = when (it) {
+                    Event.GtaProcessNotFound -> "GTA5.exe is not running"
+                    is Event.RestartError -> it.exception.message ?: "An unknown error occurred"
+                }
+                snackbarHostState.showSnackbar(message, withDismissAction = true)
             }
     }
 

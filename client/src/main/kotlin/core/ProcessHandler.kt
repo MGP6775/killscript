@@ -14,7 +14,12 @@ import kotlin.time.Duration.Companion.seconds
 
 private val LOG = KotlinLogging.logger { }
 
-private val _events = MutableSharedFlow<Unit>(extraBufferCapacity = Channel.UNLIMITED)
+sealed interface Event {
+    object GtaProcessNotFound : Event
+    data class RestartError(val exception: Exception) : Event
+}
+
+private val _events = MutableSharedFlow<Event>(extraBufferCapacity = Channel.UNLIMITED)
 val gtaKillErrors = _events.asSharedFlow()
 
 suspend fun killGta() {
@@ -31,11 +36,15 @@ suspend fun killGta() {
 
         if (settings.autostartGta) {
             LOG.info { "Restarting GTA5.exe" }
-            val gtaPath = WindowsAPI.readGtaLocation(version) / version.startBinary
-            Runtime.getRuntime().exec(arrayOf(gtaPath.absolutePathString()))
+            try {
+                val gtaPath = WindowsAPI.readGtaLocation(version) / version.startBinary
+                Runtime.getRuntime().exec(arrayOf(gtaPath.absolutePathString()))
+            } catch (e: Exception) {
+                _events.emit(Event.RestartError(e))
+            }
         }
     } else {
         LOG.error { "GTA5.exe not found" }
-        _events.emit(Unit)
+        _events.emit(Event.GtaProcessNotFound)
     }
 }

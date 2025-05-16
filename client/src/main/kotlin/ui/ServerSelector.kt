@@ -165,6 +165,6 @@ private fun String.parseUrl(): Url {
     return if ("://" in url) {
         Url(url)
     } else {
-        Url("wss://$url")
+        Url("https://$url")
     }
 }
