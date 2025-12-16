@@ -50,7 +50,12 @@ private fun SegmentAllocator.allocateCStrings(vararg values: String) = slice_ref
 
 object WindowsAPI {
     fun readGtaLocation(version: GTAVersion) = Arena.ofConfined().use {
-        Path(readString { WindowsHelper.read_gta_location(it, version.ordinal.toByte())})
+        val result = WindowsHelper.read_gta_location(it, version.ordinal.toByte())
+        val string = readString { GtaInstallLocationResult.content(result) }
+        val isError = GtaInstallLocationResult.is_error(result)
+
+        if (isError) throw RuntimeException(string)
+        Path(string)
     }
 
     fun registerKeyboardHook() = WindowsHelper.register_keyboard_hook()

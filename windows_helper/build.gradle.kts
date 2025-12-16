@@ -80,6 +80,7 @@ tasks {
             "--include-struct", "Vec_uint8",
             "--include-struct", "Vec_uint8_t",
             "--include-struct", "slice_ref_Vec_uint8",
+            "--include-struct", "GtaInstallLocationResult",
             header,
         )
     }
