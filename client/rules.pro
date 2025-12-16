@@ -31,5 +31,6 @@
 # Logback
 -keep class org.slf4j.spi.SLF4JServiceProvider
 -keep class ch.qos.logback.classic.spi.LogbackServiceProvider
+ -dontwarn io.github.oshai.kotlinlogging.internal.**
 
 -optimizations !method/specialization/parametertype

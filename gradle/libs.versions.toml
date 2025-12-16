@@ -3,7 +3,7 @@ kotlin = "2.3.0"
 ktor = "3.3.3"
 kotlinx-serialization = "1.9.0"
 compose = "1.9.3"
-proguard = "2.7.0"
+proguard = "7.8.2"
 
 [libraries]
 kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -33,7 +33,7 @@ compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navi
 kotlin-logging = { group = "io.github.oshai", name = "kotlin-logging", version = "7.0.13" }
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version = "1.5.22" }
 
-kord-gateway = { group = "dev.kord", name = "kord-gateway", version = "0.15.0" }
+kord-gateway = { group = "dev.kord", name = "kord-gateway", version = "0.17.0" }
 
 jwt = { group = "com.auth0", name = "java-jwt", version = "4.5.0" }
 

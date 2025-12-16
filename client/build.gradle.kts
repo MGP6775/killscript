@@ -114,6 +114,7 @@ compose {
                     proguard {
                         version = libs.versions.proguard
                         obfuscate = false
+                        version = libs.versions.proguard
                         configurationFiles.from(
                             fileTree(collectProguardConfigs.map { it.destinationDir }) {
                                 include("*.pro")

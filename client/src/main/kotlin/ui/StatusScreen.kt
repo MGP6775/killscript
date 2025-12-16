@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material3.*
+import androidx.compose.material3.TooltipAnchorPosition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -19,7 +20,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatusScreen(navController: NavController) {
     val api = currentApi ?: error("Not connected to server")
@@ -30,7 +31,7 @@ fun StatusScreen(navController: NavController) {
         modifier = Modifier.fillMaxWidth()
     ) {
         TooltipBox(
-            positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
+            positionProvider = TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
             tooltip = { PlainTooltip { Text("Disconnect from server") } },
             state = rememberTooltipState()
         ) {
@@ -51,7 +52,7 @@ fun StatusScreen(navController: NavController) {
         ) {
             Text(
                 "Connected to ${api.url.hostWithPortIfSpecified}",
-                style = MaterialTheme.typography.headlineLargeEmphasized,
+                style = MaterialTheme.typography.headlineLarge,
                 color = contentColorFor(MaterialTheme.colorScheme.surface)
             )
         }

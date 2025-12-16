@@ -7,8 +7,8 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.Route
 import io.ktor.server.resources.post
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlin.time.Duration.Companion.seconds
 import dev.schlaubi.gtakiller.common.Kill as KillObject
 

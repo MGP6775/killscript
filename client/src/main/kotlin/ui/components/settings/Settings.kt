@@ -91,7 +91,6 @@ fun TextInputWithHeading(
         })
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun CheckboxWithHeading(heading: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) =
     InputWithHeading(heading) {
