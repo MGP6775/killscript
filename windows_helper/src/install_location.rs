@@ -1,5 +1,5 @@
 use enum_ordinalize::Ordinalize;
-use log::{debug, info};
+use log::info;
 use safer_ffi::ඞ::repr_c;
 use safer_ffi::{derive_ReprC, ffi_export};
 use std::fmt::Display;
