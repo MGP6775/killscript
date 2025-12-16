@@ -34,19 +34,19 @@ suspend fun killGta() {
 
         delay(2.seconds)
 
+        if (settings.autostartGta) {
+            LOG.info { "Restarting GTA5.exe" }
+            try {
+                val gtaPath = WindowsAPI.readGtaLocation(version) / version.startBinary
+                Runtime.getRuntime().exec(arrayOf(gtaPath.absolutePathString()))
+            } catch (e: Exception) {
+                LOG.error(e) { "Could not restart GTA5.exe" }
+                _events.emit(Event.RestartError(e))
+            }
+        }
     } else {
         LOG.error { "GTA5.exe not found" }
         _events.emit(Event.GtaProcessNotFound(version.process))
     }
 
-    if (settings.autostartGta) {
-        LOG.info { "Restarting GTA5.exe" }
-        try {
-            val gtaPath = WindowsAPI.readGtaLocation(version) / version.startBinary
-            Runtime.getRuntime().exec(arrayOf(gtaPath.absolutePathString()))
-        } catch (e: Exception) {
-            LOG.error(e) { "Could not restart GTA5.exe" }
-            _events.emit(Event.RestartError(e))
-        }
-    }
 }
