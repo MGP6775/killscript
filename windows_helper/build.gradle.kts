@@ -43,10 +43,17 @@ tasks {
         inputs.file(header)
         outputs.dir(jextractOutput)
 
+        val dir = System.getenv("JEXTRACT")
         val command = if (HostManager.hostIsMingw) {
             "jextract.bat"
         } else {
             "jextract"
+        }
+
+        val jextract = if (dir == null) {
+            command
+        } else {
+            "$dir/bin/$command"
         }
 
         val libraryPath = if (System.getenv("GITHUB_REF") != null) {
@@ -56,7 +63,7 @@ tasks {
         }
 
         commandLine(
-            command,
+            jextract,
             "--header-class-name", "WindowsHelper",
             "--target-package", "dev.schlaubi.mastermind.windows_helper",
             "--library", libraryPath,
