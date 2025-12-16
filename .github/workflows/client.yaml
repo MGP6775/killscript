@@ -13,8 +13,15 @@ jobs:
         run: |
           mkdir jextract && cd jextract
           curl -L -o jextract.tar.gz https://download.java.net/java/early_access/jextract/25/2/openjdk-25-jextract+2-4_windows-x64_bin.tar.gz
-          tar xzf jextract.tar.gz --strip-components=1
-          echo "$(pwd)\bin" >> $GITHUB_PATH
+          tar xzvf jextract.tar.gz --strip-components=1
+          echo "$(pwd)" >> $GITHUB_PATH
+          pwd
+          echo "a"
+          ls
+          echo "a"
+          ls bin
+          // D:\a\killscript\killscript\windows_helper
+          echo "JEXTRACT=$(pwd)" >> $GITHUB_ENV
       - uses: actions/setup-java@v5
         with:
           distribution: "temurin"
@@ -23,7 +30,7 @@ jobs:
         with:
           cache-workspaces: windows_helper
       - uses: gradle/actions/setup-gradle@v5
-      - run: ./gradlew client:packageReleaseDistributionForCurrentOS
+      - run: ./gradlew client:packageReleaseDistributionForCurrentOS --stacktrace
       - run: mv 'GTA Killer-*.msi' client.msi
         working-directory: client/build/compose/binaries/main-release/msi/
       - name: Release
