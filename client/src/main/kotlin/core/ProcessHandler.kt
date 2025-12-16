@@ -15,7 +15,7 @@ import kotlin.time.Duration.Companion.seconds
 private val LOG = KotlinLogging.logger { }
 
 sealed interface Event {
-    object GtaProcessNotFound : Event
+    data class GtaProcessNotFound(val processName: String) : Event
     data class RestartError(val exception: Exception) : Event
 }
 
@@ -45,6 +45,6 @@ suspend fun killGta() {
         }
     } else {
         LOG.error { "GTA5.exe not found" }
-        _events.emit(Event.GtaProcessNotFound)
+        _events.emit(Event.GtaProcessNotFound(version.process))
     }
 }

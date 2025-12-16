@@ -53,7 +53,7 @@ fun GTAKiller() {
         gtaKillErrors
             .collect {
                 val message = when (it) {
-                    Event.GtaProcessNotFound -> "GTA5.exe is not running"
+                    is Event.GtaProcessNotFound -> "${it.processName} is not running"
                     is Event.RestartError -> it.exception.message ?: "An unknown error occurred"
                 }
                 snackbarHostState.showSnackbar(message, withDismissAction = true)
