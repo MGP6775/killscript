@@ -8,29 +8,20 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Set up jextract
-        shell: bash
-        run: |
-          mkdir jextract && cd jextract
-          curl -L -o jextract.tar.gz https://download.java.net/java/early_access/jextract/25/2/openjdk-25-jextract+2-4_windows-x64_bin.tar.gz
-          tar xzvf jextract.tar.gz --strip-components=1
-          echo "$(pwd)" >> $GITHUB_PATH
-          pwd
-          echo "a"
-          ls
-          echo "a"
-          ls bin
-          // D:\a\killscript\killscript\windows_helper
-          echo "JEXTRACT=$(pwd)" >> $GITHUB_ENV
-      - uses: actions/setup-java@v5
+      - name: 'Set up latest JDK code tool jextract'
+        uses: oracle-actions/setup-java@v1
         with:
-          distribution: "temurin"
+          website: jdk.java.net
+          release: jextract
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "oracle"
           java-version: "25"
       - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           cache-workspaces: windows_helper
       - uses: gradle/actions/setup-gradle@v5
-      - run: ./gradlew client:packageReleaseDistributionForCurrentOS --stacktrace
+      - run: ./gradlew client:packageReleaseDistributionForCurrentOS
       - run: mv 'GTA Killer-*.msi' client.msi
         working-directory: client/build/compose/binaries/main-release/msi/
       - name: Release
