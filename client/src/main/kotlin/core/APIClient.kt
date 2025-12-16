@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import dev.kord.gateway.retry.LinearRetry
 import dev.schlaubi.gtakiller.common.*
+import dev.schlaubi.gtakiller.common.Event
 import dev.schlaubi.mastermind.core.settings.settings
 import dev.schlaubi.mastermind.core.settings.writeSettings
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -95,10 +96,10 @@ class APIClient(val url: Url) : CoroutineScope {
         session.launch {
             for (message in session.incoming) {
                 val event = client.plugin(WebSockets).contentConverter!!.deserialize<Event>(message)
-                    LOG.debug { "Received event: $event" }
-                    _events.emit(event)
-                    handleEvent(event)
-                }
+                LOG.debug { "Received event: $event" }
+                _events.emit(event)
+                handleEvent(event)
+            }
 
             LOG.info { "Lost connection to websocket" }
             connectToWebSocket(isRetry = true)
