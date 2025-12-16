@@ -1,6 +1,7 @@
 package dev.schlaubi.mastermind.util
 
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.nativeKeyCode
 
 val keys = mapOf(
     "Home" to Key.Home,
@@ -290,3 +291,5 @@ val keys = mapOf(
     "ThumbsDown" to Key.ThumbsDown,
     "ProfileSwitch" to Key.ProfileSwitch
 )
+
+val keysById = keys.toList().associate { (keyName, key) -> key.nativeKeyCode to keyName }
