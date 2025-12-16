@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: 'Set up latest JDK code tool jextract'
         uses: oracle-actions/setup-java@v1
         with:
@@ -16,11 +16,11 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: "23"
+          java-version: "25"
       - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           cache-workspaces: windows_helper
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v5
       - run: ./gradlew client:packageReleaseDistributionForCurrentOS
       - run: mv 'GTA Killer-*.msi' client.msi
         working-directory: client/build/compose/binaries/main-release/msi/

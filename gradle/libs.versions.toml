@@ -1,17 +1,17 @@
 [versions]
-kotlin = "2.1.10"
-ktor = "3.1.0"
-kotlinx-serialization = "1.8.0"
-compose = "1.8.0-alpha03"
-proguard = "7.6.1"
+kotlin = "2.3.0"
+ktor = "3.3.3"
+kotlinx-serialization = "1.9.0"
+compose = "1.9.3"
+proguard = "2.7.0"
 
 [libraries]
 kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-json-io = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json-io", version.ref = "kotlinx-serialization" }
-kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version = "0.6.2" }
-kotlinx-io-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-io-core", version = "0.7.0" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version = "0.7.1" }
+kotlinx-io-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-io-core", version = "0.7.2" }
 
 ktor-resources = { group = "io.ktor", name = "ktor-resources", version.ref = "ktor" }
 ktor-http = { group = "io.ktor", name = "ktor-http", version.ref = "ktor" }
@@ -27,11 +27,11 @@ ktor-server-forwarded-header = { group = "io.ktor", name = "ktor-server-forwarde
 ktor-server-resources = { group = "io.ktor", name = "ktor-server-resources", version.ref = "ktor" }
 ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-content-negotiation", version.ref = "ktor" }
 
-androidx-lifecycle-viewmodel-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version = "2.9.0-alpha03" }
-compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version = "2.8.0-alpha13" }
+androidx-lifecycle-viewmodel-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version = "2.9.6" }
+compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version = "2.9.1" }
 
-kotlin-logging = { group = "io.github.oshai", name = "kotlin-logging", version = "7.0.4" }
-logback-classic = { group = "ch.qos.logback", name = "logback-classic", version = "1.5.17" }
+kotlin-logging = { group = "io.github.oshai", name = "kotlin-logging", version = "7.0.13" }
+logback-classic = { group = "ch.qos.logback", name = "logback-classic", version = "1.5.22" }
 
 kord-gateway = { group = "dev.kord", name = "kord-gateway", version = "0.15.0" }
 
@@ -41,4 +41,4 @@ jwt = { group = "com.auth0", name = "java-jwt", version = "4.5.0" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
-buildconfig = { id = "com.github.gmazzo.buildconfig", version = "5.5.1" }
+buildconfig = { id = "com.github.gmazzo.buildconfig", version = "6.0.6" }

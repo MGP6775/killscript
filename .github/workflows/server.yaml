@@ -17,12 +17,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+        uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
         with:
-          java-version: 23
+          java-version: 25
           distribution: temurin
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v5
       - run: ./gradlew server:installDist
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v3
