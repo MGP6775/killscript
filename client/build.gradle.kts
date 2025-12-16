@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.buildconfig)
 }
 
-version = "1.6.3"
+version = "1.6.4"
 
 repositories {
     mavenCentral()
@@ -65,9 +65,15 @@ tasks {
         into(layout.buildDirectory.dir("dll/common"))
     }
 
+    val copyLogback by registering(Copy::class) {
+        from(layout.projectDirectory.dir("src/main/resources/logback.xml"))
+        include("*.xml")
+        into(layout.buildDirectory.dir("dll/common"))
+    }
+
     afterEvaluate {
         named("prepareAppResources") {
-            dependsOn(copyDll)
+            dependsOn(copyDll, copyLogback)
         }
         named("proguardReleaseJars") {
             dependsOn(collectProguardConfigs)
@@ -105,6 +111,7 @@ compose {
                 windows {
                     iconFile = layout.projectDirectory.file("icons/icon.ico")
                     menuGroup = "GTA Killer"
+                    console = true
                     upgradeUuid = "8193b8f9-1355-4d0f-9c6f-6619d0f18604"
                 }
             }
